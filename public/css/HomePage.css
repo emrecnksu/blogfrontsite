@@ -1,0 +1,25 @@
+#categories-menu {
+    z-index: 10; /* Ensure the dropdown menu is on top */
+}
+
+.group:hover #categories-menu {
+    display: block;
+}
+
+.relative {
+    position: relative;
+}
+
+.group:hover .absolute {
+    display: block;
+}
+
+#categories-menu, #user-menu {
+    z-index: 1000; /* Ensure dropdowns appear above other elements */
+}
+
+@media (max-width: 768px) {
+    #navbar-default {
+        display: none;
+    }
+}
