@@ -6,6 +6,10 @@
     display: block;
 }
 
+.container div .border-radius {
+    border-radius: 6px;
+}
+
 .relative {
     position: relative;
 }

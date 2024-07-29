@@ -13,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js"></script>
     <link rel="stylesheet" href="{{ asset('css/HomePage.css') }}">
 </head>
-<body class="bg-gray-200 font-sans leading-normal tracking-normal min-h-screen flex flex-col">
+<body class="bg-white font-sans leading-normal tracking-normal min-h-screen flex flex-col">
     <nav class="bg-gray-900 p-4 mt-0 w-full">
         <div class="max-w-screen-xl flex items-center justify-between mx-auto px-6 py-6">
             <a href="{{ route('index') }}" class="flex items-center text-white mr-6">

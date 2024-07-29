@@ -52,7 +52,7 @@
         @endif
 
         <!-- Yorumlar Listesi -->
-        <div id="comments-section" class="bg-white shadow-md rounded p-4">
+        <div id="comments-section" class="bg-white mb-4 shadow-md rounded p-4">
             @foreach ($comments as $comment)
                 @if($comment['post_id'] == $postInfo['id'])
                     <div class="border-b pb-4 mb-4">
@@ -88,13 +88,13 @@
         </div>
     </div>
 
-    <div class="bg-gray-200">
+    <div class="border-radius bg-gray-100">
         <div class="container w-full max-w-6xl mx-auto px-2 py-8">
             <h2 class="text-2xl font-bold mb-4">{{ $isCategoryRelated ? 'İlgili Yazılar' : 'Tavsiye Edilen Yazılar' }}</h2>
             <div class="flex flex-wrap -mx-2">
                 @foreach ($relatedPosts as $relatedPost)
                     <div class="w-full md:w-1/3 px-2 pb-12">
-                        <div class="h-full bg-white rounded overflow-hidden shadow-md hover:shadow-lg relative smooth">
+                        <div class="h-full bg-gray-100 rounded overflow-hidden shadow-md hover:shadow-lg relative smooth">
                             <a href="{{ url('/post/' . $relatedPost['id']) }}" class="no-underline">
                                 <img src="{{ $relatedPost['image'] }}" class="w-full h-64 object-cover rounded-t" alt="{{ $relatedPost['title'] }}">
                                 <div class="p-4">
