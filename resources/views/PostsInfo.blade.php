@@ -33,6 +33,7 @@
         <div class="flex-1">
             <p class="text-base font-bold text-base md:text-xl leading-none">{{ $postInfo['user']['name'] }} {{ $postInfo['user']['surname'] }}</p>
         </div>
+        <p class="text-base font-bold text-base md:text-xl leading-none text-gray-600">{{ \Carbon\Carbon::parse($postInfo['start_date'])->locale('tr')->timezone('Europe/Istanbul')->diffForHumans() }}</p>
     </div>
 
     <!-- Yorumlar Bölümü -->
