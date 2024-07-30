@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 class HomeController
 {
@@ -14,8 +12,8 @@ class HomeController
         $categoriesResponse = Http::get('http://host.docker.internal/api/categories');
         $postsResponse = Http::get('http://host.docker.internal/api/posts');
 
-        $categories = $categoriesResponse->successful() ? $categoriesResponse->json()['categories'] : [];
-        $posts = $postsResponse->successful() ? $postsResponse->json()['posts'] : [];
+        $categories = $categoriesResponse->successful() ? $categoriesResponse->json()['data'] : [];
+        $posts = $postsResponse->successful() ? $postsResponse->json()['data'] : [];
 
         return view('HomePage', compact('categories', 'posts'));
     }
@@ -27,11 +25,11 @@ class HomeController
         $relatedPostsResponse = Http::get("http://host.docker.internal/api/posts/related/{$id}");
         $commentsResponse = Http::get("http://host.docker.internal/api/comments", ['query' => ['post_id' => $id]]);
 
-        $categories = $categoriesResponse->successful() ? $categoriesResponse->json()['categories'] : [];
-        $postInfo = $postInfoResponse->successful() ? $postInfoResponse->json()['post'] : null;
+        $categories = $categoriesResponse->successful() ? $categoriesResponse->json()['data'] : [];
+        $postInfo = $postInfoResponse->successful() ? $postInfoResponse->json()['data'] : null;
         $relatedPosts = $relatedPostsResponse->successful() ? $relatedPostsResponse->json()['relatedPosts'] : [];
         $isCategoryRelated = $relatedPostsResponse->successful() ? $relatedPostsResponse->json()['isCategoryRelated'] : false;
-        $comments = $commentsResponse->successful() ? $commentsResponse->json()['comments'] : [];
+        $comments = $commentsResponse->successful() ? $commentsResponse->json()['data'] : [];
 
         return view('PostsInfo', compact('postInfo', 'categories', 'relatedPosts', 'isCategoryRelated', 'comments'));
     }
@@ -42,22 +40,21 @@ class HomeController
         $categoriesResponse = Http::get('http://host.docker.internal/api/categories');
 
         if ($response->successful() && $categoriesResponse->successful()) {
-            $category = $response->json()['category'];
-            $posts = $response->json()['posts'];
-            $categories = $categoriesResponse->json()['categories'];
+            $responseData = $response->json()['data']; 
+            $category = $responseData['category'];
+            $posts = $responseData['posts'];
+            $categories = $categoriesResponse->json()['data'];
 
             return view('CategoryPosts', compact('category', 'posts', 'categories'));
         }
-
-        return redirect()->route('index')->with('error', 'Kategoriye ait gönderiler yüklenemedi.');
     }
 
     public function showkvkk()
     {
-        $response = Http::get('http://host.docker.internal/api/kvkk'); 
-        $kvkk = $response->json('kvkk');
+        $response = Http::get('http://host.docker.internal/api/kvkk');
+        $kvkk = $response->json('data');
         $categoriesResponse = Http::get('http://host.docker.internal/api/categories');
-        $categories = $categoriesResponse->successful() ? $categoriesResponse->json()['categories'] : [];
+        $categories = $categoriesResponse->successful() ? $categoriesResponse->json()['data'] : [];
 
         return view('kvkk.show', compact('kvkk', 'categories'));
     }

@@ -3,15 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 
 class UserController
 {
-    public function signup(Request $request)
+    public function signup()
     {
         return view("register");
     }
@@ -32,7 +29,7 @@ class UserController
             return redirect()->route('login.form')->with('success', $responseData['message']);
         }
 
-        return redirect()->back()->with('error', $responseData['error']);
+        return redirect()->back()->with('error', $responseData['error'] ?? 'Kayıt işlemi başarısız oldu.');
     }
 
     public function loginForm()
@@ -50,36 +47,32 @@ class UserController
         $responseData = $response->json();
 
         if ($response->successful()) {
-            Session::put('token', $responseData['token']);
-            Session::put('user_id', $responseData['user_id']);
-            Session::put('name', $responseData['name']);
-            Session::put('surname', $responseData['surname']);
+            Session::put('token', $responseData['data']['token']);
+            Session::put('user_id', $responseData['data']['user']['id']);
+            Session::put('name', $responseData['data']['user']['name']);
+            Session::put('surname', $responseData['data']['user']['surname']);
 
             return redirect()->route('index')->with('success', $responseData['message']);
         }
 
-        return redirect()->back()->with('error', $responseData['error']);
+        return redirect()->back()->with('error', $responseData['error'] ?? 'Giriş işlemi başarısız oldu.');
     }
 
     public function logout(Request $request)
     {
-        $token = $request->session()->get('token');
+        $token = Session::get('token');
+        Session::flush();
 
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
         ])->post('http://host.docker.internal/api/logout');
 
         if ($response->successful()) {
-            $responseData = $response->json();
-
-            Auth::logout();
-            Session::flush();;
-
-            return redirect()->route('login.form')->with('success', $responseData['message']);
+            
+            return redirect()->route('login.form')->with('success', $response->json()['message']);
+            
         }
 
-        $responseData = $response->json();
-        $error = isset($responseData['error']) ? $responseData['error'] : 'Bir hata oluştu. Lütfen tekrar deneyin.';
-        return back()->with('error', $error);
+        return back()->with('error', $response->json()['error'] ?? 'Bir hata oluştu. Lütfen tekrar deneyin.');
     }
 }

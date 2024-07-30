@@ -27,7 +27,7 @@ class CommentController
             return redirect()->route('post.show', ['id' => $request->post_id])->with('success', $responseData['message']);
         }
 
-        return redirect()->route('post.show', ['id' => $request->post_id])->with('error', $responseData['error'] ?? 'Yorum eklenemedi.');
+        return redirect()->route('post.show', ['id' => $request->post_id])->with('error', $responseData['message'] ?? 'Yorum eklenemedi.');
     }
 
     public function update(Request $request, $id)
@@ -40,7 +40,6 @@ class CommentController
 
         $response = Http::withToken($token)->put("http://host.docker.internal/api/comments/{$id}", [
             'content' => $request->content,
-            'post_id' => $request->post_id,
         ]);
 
         $responseData = $response->json();
@@ -49,7 +48,7 @@ class CommentController
             return redirect()->route('post.show', ['id' => $request->post_id])->with('success', $responseData['message']);
         }
 
-        return redirect()->route('post.show', ['id' => $request->post_id])->with('error', $responseData['error'] ?? 'Yorum güncellenemedi.');
+        return redirect()->route('post.show', ['id' => $request->post_id])->with('error', $responseData['message'] ?? 'Yorum güncellenemedi.');
     }
 
     public function delete(Request $request, $id)
@@ -60,9 +59,7 @@ class CommentController
             return redirect()->route('login.form')->with('error', 'Yetkilendirme hatası. Lütfen tekrar giriş yapın.');
         }
 
-        $response = Http::withToken($token)->delete("http://host.docker.internal/api/comments/{$id}", [
-            'post_id' => $request->post_id,
-        ]);
+        $response = Http::withToken($token)->delete("http://host.docker.internal/api/comments/{$id}");
 
         $responseData = $response->json();
 
@@ -70,7 +67,6 @@ class CommentController
             return redirect()->route('post.show', ['id' => $request->post_id])->with('success', $responseData['message']);
         }
 
-        return redirect()->route('post.show', ['id' => $request->post_id])->with('error', $responseData['error'] ?? 'Yorum silinemedi.');
+        return redirect()->route('post.show', ['id' => $request->post_id])->with('error', $responseData['message'] ?? 'Yorum silinemedi.');
     }
 }
-
