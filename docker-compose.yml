@@ -1,7 +1,7 @@
 services:
   app:
     build:
-      context: .
+      context: ./Docker
       dockerfile: Dockerfile
     ports:
       - "8001:8000"
