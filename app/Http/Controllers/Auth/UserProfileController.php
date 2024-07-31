@@ -55,13 +55,15 @@ class UserProfileController
             'delete_password' => $request->delete_password,
         ]);
 
-        $responseData = $response->json();
+        $responseData = $response->json(); 
+        
 
         if ($response->successful()) {
             Session::forget('token');
             Session::forget('name');
             Session::forget('surname');
-            return redirect()->route('index')->with('success', $responseData['message']);
+             
+            return redirect()->route('index')->with('success', $responseData['message']);  
         }
 
         return redirect()->back()->with('error', $responseData['error'] ?? 'Hesap silme işlemi başarısız oldu.');

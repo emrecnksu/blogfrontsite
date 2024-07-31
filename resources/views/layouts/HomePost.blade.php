@@ -89,6 +89,22 @@
         </div>
     </nav>
 
+    <div class="container mx-auto">
+        <div class="flex justify-center">
+            @if (session('error'))
+                <div class="bg-red-500 mt-3 text-white text-sm font-bold px-4 py-3 mb-4 rounded" role="alert">
+                    {{ session('error') }}
+                </div>
+            @endif
+    
+            @if (session('success'))
+                <div class="bg-green-500 text-white mt-3 text-sm font-bold px-4 py-3 mb-4 rounded" role="alert">
+                    {{ session('success') }}
+                </div>
+            @endif
+        </div>
+    </div>    
+    
     <main class="container mx-auto py-4 flex-grow">
         @yield('content')
     </main>
