@@ -14,8 +14,8 @@
             <a href="{{ url('/') }}" class="text-white text-lg font-bold">KLE Blog</a>
             <nav>
                 <ul class="flex items-center space-x-4">
-                    @if (session('user.token'))
-                        <li class="text-white">{{ session('name') }} {{ session('surname') }}</li>
+                    @if (session('token'))
+                        <li class="text-white">{{ session('user.name') }} {{ session('user.surname') }}</li>
                         <li>
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf

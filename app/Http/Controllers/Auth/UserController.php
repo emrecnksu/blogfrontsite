@@ -54,10 +54,12 @@ class UserController
         $responseData = $response->json();
 
         if ($response->successful()) {
+            Session::put('user', [
+                'id' => $responseData['data']['user']['id'],
+                'name' => $responseData['data']['user']['name'],
+                'surname' => $responseData['data']['user']['surname'],
+            ]);
             Session::put('token', $responseData['data']['token']);
-            Session::put('user_id', $responseData['data']['user']['id']);
-            Session::put('name', $responseData['data']['user']['name']);
-            Session::put('surname', $responseData['data']['user']['surname']);  
 
             return redirect()->route('index')->with('success', $responseData['message']);
         }
@@ -68,15 +70,15 @@ class UserController
     public function logout(Request $request)
     {
         $token = Session::get('token');
-        
+
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
         ])->post("{$this->apiBaseUrl}/api/logout");
 
         if ($response->successful()) {
             Session::flush();
-            
-            return redirect()->route('login.form')->with('success', $response->json()['message']);    
+
+            return redirect()->route('login.form')->with('success', $response->json()['message']);
         }
 
         return back()->with('error', $response->json()['error'] ?? 'Bir hata oluştu. Lütfen tekrar deneyin.');

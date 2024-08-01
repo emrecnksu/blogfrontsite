@@ -31,8 +31,11 @@ class UserProfileController
         $responseData = $response->json();
 
         if ($response->successful()) {
-            Session::put('name', $responseData['data']['name']);
-            Session::put('surname', $responseData['data']['surname']);
+            Session::put('user', [
+                'name' => $responseData['data']['name'],
+                'surname' => $responseData['data']['surname'],
+                'email' => $responseData['data']['email'],
+            ]);
 
             return redirect()->route('profile')->with('success', $responseData['message']);
         }
@@ -62,14 +65,12 @@ class UserProfileController
             'delete_password' => $request->delete_password,
         ]);
 
-        $responseData = $response->json(); 
-        
+        $responseData = $response->json();
+
         if ($response->successful()) {
-            Session::forget('token');
-            Session::forget('name');
-            Session::forget('surname');
-             
-            return redirect()->route('index')->with('success', $responseData['message']);  
+            Session::flush();
+
+            return redirect()->route('index')->with('success', $responseData['message']);
         }
 
         return redirect()->back()->with('error', $responseData['error'] ?? 'Hesap silme işlemi başarısız oldu.');

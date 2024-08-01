@@ -39,7 +39,7 @@
                     </li>
                 </ul>
                 <ul class="flex items-center ml-4">
-                    @if (Session::has('user.token'))
+                    @if (Session::has('token'))
                         <li class="relative group">
                             <button class="rounded-full px-3 py-2 font-semibold bg-white bg-opacity-10 flex items-center" id="user-menu-button">
                                 <span class="mr-2 text-white">{{ Session::get('user.name')}} {{ Session::get('user.surname') }}</span>
@@ -97,15 +97,15 @@
                     {{ session('error') }}
                 </div>
             @endif
-    
+
             @if (session('success'))
                 <div class="bg-green-500 text-white mt-3 text-sm font-bold px-4 py-3 mb-4 rounded" role="alert">
                     {{ session('success') }}
                 </div>
             @endif
         </div>
-    </div>    
-    
+    </div>
+
     <main class="container mx-auto py-4 flex-grow">
         @yield('content')
     </main>
