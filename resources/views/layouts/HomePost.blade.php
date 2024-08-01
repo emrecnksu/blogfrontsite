@@ -39,10 +39,10 @@
                     </li>
                 </ul>
                 <ul class="flex items-center ml-4">
-                    @if (Session::has('token'))
+                    @if (Session::has('user.token'))
                         <li class="relative group">
                             <button class="rounded-full px-3 py-2 font-semibold bg-white bg-opacity-10 flex items-center" id="user-menu-button">
-                                <span class="mr-2 text-white">{{ Session::get('name') }} {{ Session::get('surname') }}</span>
+                                <span class="mr-2 text-white">{{ Session::get('user.name')}} {{ Session::get('user.surname') }}</span>
                             </button>
                             <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden" id="user-menu">
                                 <a href="{{ route('profile') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profil</a>
@@ -62,6 +62,7 @@
                             </a>
                         </li>
                     @endif
+
                 </ul>
             </div>
         </div>

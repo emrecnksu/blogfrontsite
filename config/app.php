@@ -13,6 +13,12 @@ return [
     |
     */
 
+    ///// Api Base URL ///// 
+
+    'api_base_url' => env('API_BASE_URL', 'http://localhost'),
+
+    ///// ///// ///// ////
+
     'name' => env('APP_NAME', 'Laravel'),
 
     /*

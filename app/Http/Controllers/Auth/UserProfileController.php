@@ -8,11 +8,18 @@ use Illuminate\Support\Facades\Session;
 
 class UserProfileController
 {
+    protected $apiBaseUrl;
+
+    public function __construct()
+    {
+        $this->apiBaseUrl = config('app.api_base_url');
+    }
+
     public function update(Request $request)
     {
         $token = Session::get('token');
 
-        $response = Http::withToken($token)->post('http://host.docker.internal/api/users/profile/update', [
+        $response = Http::withToken($token)->post("{$this->apiBaseUrl}/api/users/profile/update", [
             'name' => $request->name,
             'surname' => $request->surname,
             'email' => $request->email,
@@ -37,7 +44,7 @@ class UserProfileController
     {
         $token = Session::get('token');
 
-        $response = Http::withToken($token)->get('http://host.docker.internal/api/users/profile');
+        $response = Http::withToken($token)->get("{$this->apiBaseUrl}/api/users/profile");
         $responseData = $response->json();
 
         if ($response->successful()) {
@@ -51,13 +58,12 @@ class UserProfileController
     {
         $token = Session::get('token');
 
-        $response = Http::withToken($token)->post('http://host.docker.internal/api/users/profile/delete', [
+        $response = Http::withToken($token)->post("{$this->apiBaseUrl}/api/users/profile/delete", [
             'delete_password' => $request->delete_password,
         ]);
 
         $responseData = $response->json(); 
         
-
         if ($response->successful()) {
             Session::forget('token');
             Session::forget('name');

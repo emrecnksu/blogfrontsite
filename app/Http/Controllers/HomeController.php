@@ -7,55 +7,53 @@ use Illuminate\Support\Facades\Http;
 
 class HomeController
 {
+    protected $apiBaseUrl;
+
+    public function __construct()
+    {
+        $this->apiBaseUrl = config('app.api_base_url');
+    }
+
     public function index()
     {
-        $categoriesResponse = Http::get('http://host.docker.internal/api/categories');
-        $postsResponse = Http::get('http://host.docker.internal/api/posts');
-
-        $categories = $categoriesResponse->successful() ? $categoriesResponse->json()['data'] : [];
+        $postsResponse = Http::get("{$this->apiBaseUrl}/api/posts");
         $posts = $postsResponse->successful() ? $postsResponse->json()['data'] : [];
 
-        return view('HomePage', compact('categories', 'posts'));
+        return view('HomePage', compact('posts'));
     }
 
     public function show($id)
     {
-        $postInfoResponse = Http::get("http://host.docker.internal/api/posts/show/{$id}");
-        $categoriesResponse = Http::get('http://host.docker.internal/api/categories');
-        $relatedPostsResponse = Http::get("http://host.docker.internal/api/posts/related/{$id}");
-        $commentsResponse = Http::get("http://host.docker.internal/api/comments", ['query' => ['post_id' => $id]]);
+        $postInfoResponse = Http::get("{$this->apiBaseUrl}/api/posts/show/{$id}");
+        $relatedPostsResponse = Http::get("{$this->apiBaseUrl}/api/posts/related/{$id}");
+        $commentsResponse = Http::get("{$this->apiBaseUrl}/api/comments", ['query' => ['post_id' => $id]]);
 
-        $categories = $categoriesResponse->successful() ? $categoriesResponse->json()['data'] : [];
         $postInfo = $postInfoResponse->successful() ? $postInfoResponse->json()['data'] : null;
         $relatedPosts = $relatedPostsResponse->successful() ? $relatedPostsResponse->json()['relatedPosts'] : [];
         $isCategoryRelated = $relatedPostsResponse->successful() ? $relatedPostsResponse->json()['isCategoryRelated'] : false;
         $comments = $commentsResponse->successful() ? $commentsResponse->json()['data'] : [];
 
-        return view('PostsInfo', compact('postInfo', 'categories', 'relatedPosts', 'isCategoryRelated', 'comments'));
+        return view('PostsInfo', compact('postInfo', 'relatedPosts', 'isCategoryRelated', 'comments'));
     }
 
     public function categoryPosts($id)
     {
-        $response = Http::get("http://host.docker.internal/api/categories/{$id}/posts");
-        $categoriesResponse = Http::get('http://host.docker.internal/api/categories');
+        $response = Http::get("{$this->apiBaseUrl}/api/categories/{$id}/posts");
 
-        if ($response->successful() && $categoriesResponse->successful()) {
+        if ($response->successful()) {
             $responseData = $response->json()['data']; 
             $category = $responseData['category'];
             $posts = $responseData['posts'];
-            $categories = $categoriesResponse->json()['data'];
 
-            return view('CategoryPosts', compact('category', 'posts', 'categories'));
+            return view('CategoryPosts', compact('category', 'posts'));
         }
     }
 
     public function showkvkk()
     {
-        $response = Http::get('http://host.docker.internal/api/kvkk');
+        $response = Http::get("{$this->apiBaseUrl}/api/kvkk");
         $kvkk = $response->json('data');
-        $categoriesResponse = Http::get('http://host.docker.internal/api/categories');
-        $categories = $categoriesResponse->successful() ? $categoriesResponse->json()['data'] : [];
 
-        return view('kvkk.show', compact('kvkk', 'categories'));
+        return view('kvkk.show', compact('kvkk'));
     }
 }

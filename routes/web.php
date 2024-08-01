@@ -25,7 +25,7 @@ Route::post('profile/delete', [UserProfileController::class, 'delete'])->name('p
 
 // Yorum işlemleri
 Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
-Route::put('/comments/{id}', [CommentController::class, 'update'])->name('comments.update');
+Route::post('/comments/{id}', [CommentController::class, 'update'])->name('comments.update');
 Route::delete('/comments/{id}', [CommentController::class, 'delete'])->name('comments.delete');
 
 Route::get('categories/{id}/posts', [HomeController::class, 'categoryPosts'])->name('category.posts');

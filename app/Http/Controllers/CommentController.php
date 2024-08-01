@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\Session;
 
 class CommentController
 {
+    protected $apiBaseUrl;
+
+    public function __construct()
+    {
+        $this->apiBaseUrl = config('app.api_base_url');
+    }
+
     public function store(Request $request)
     {
         $token = Session::get('token');
@@ -16,7 +23,7 @@ class CommentController
             return redirect()->route('login.form')->with('error', 'Yetkilendirme hatası. Lütfen tekrar giriş yapın.');
         }
 
-        $response = Http::withToken($token)->post('http://host.docker.internal/api/comments', [
+        $response = Http::withToken($token)->post("{$this->apiBaseUrl}/api/comments", [
             'post_id' => $request->post_id,
             'content' => $request->content,
         ]);
@@ -38,7 +45,10 @@ class CommentController
             return redirect()->route('login.form')->with('error', 'Yetkilendirme hatası. Lütfen tekrar giriş yapın.');
         }
 
-        $response = Http::withToken($token)->put("http://host.docker.internal/api/comments/{$id}", [
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+        ])->post("{$this->apiBaseUrl}/api/comments/{$id}", [
+            'post_id' => $request->post_id,
             'content' => $request->content,
         ]);
 
@@ -59,7 +69,7 @@ class CommentController
             return redirect()->route('login.form')->with('error', 'Yetkilendirme hatası. Lütfen tekrar giriş yapın.');
         }
 
-        $response = Http::withToken($token)->delete("http://host.docker.internal/api/comments/{$id}");
+        $response = Http::withToken($token)->delete("{$this->apiBaseUrl}/api/comments/{$id}");
 
         $responseData = $response->json();
 

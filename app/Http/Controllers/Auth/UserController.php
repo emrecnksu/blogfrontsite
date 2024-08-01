@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\Session;
 
 class UserController
 {
+    protected $apiBaseUrl;
+
+    public function __construct()
+    {
+        $this->apiBaseUrl = config('app.api_base_url');
+    }
+
     public function signup()
     {
         return view("register");
@@ -15,7 +22,7 @@ class UserController
 
     public function register(Request $request)
     {
-        $response = Http::post('http://host.docker.internal/api/register', [
+        $response = Http::post("{$this->apiBaseUrl}/api/register", [
             'name' => $request->name,
             'surname' => $request->surname,
             'email' => $request->email,
@@ -39,7 +46,7 @@ class UserController
 
     public function login(Request $request)
     {
-        $response = Http::post('http://host.docker.internal/api/login', [
+        $response = Http::post("{$this->apiBaseUrl}/api/login", [
             'email' => $request->email,
             'password' => $request->password,
         ]);
@@ -64,7 +71,7 @@ class UserController
         
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
-        ])->post('http://host.docker.internal/api/logout');
+        ])->post("{$this->apiBaseUrl}/api/logout");
 
         if ($response->successful()) {
             Session::flush();
