@@ -22,11 +22,11 @@ class HomeController
         return view('HomePage', compact('posts'));
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        $postInfoResponse = Http::get("{$this->apiBaseUrl}/api/posts/show/{$id}");
-        $relatedPostsResponse = Http::get("{$this->apiBaseUrl}/api/posts/related/{$id}");
-        $commentsResponse = Http::get("{$this->apiBaseUrl}/api/comments", ['query' => ['post_id' => $id]]);
+        $postInfoResponse = Http::get("{$this->apiBaseUrl}/api/post/{$slug}");
+        $relatedPostsResponse = Http::get("{$this->apiBaseUrl}/api/posts/related/{$slug}");
+        $commentsResponse = Http::get("{$this->apiBaseUrl}/api/comments", ['query' => ['post_slug' => $slug]]);
 
         $postInfo = $postInfoResponse->successful() ? $postInfoResponse->json()['data'] : null;
         $relatedPosts = $relatedPostsResponse->successful() ? $relatedPostsResponse->json()['relatedPosts'] : [];
@@ -36,12 +36,12 @@ class HomeController
         return view('PostsInfo', compact('postInfo', 'relatedPosts', 'isCategoryRelated', 'comments'));
     }
 
-    public function categoryPosts($id)
+    public function categoryPosts($slug)
     {
-        $response = Http::get("{$this->apiBaseUrl}/api/categories/{$id}/posts");
+        $response = Http::get("{$this->apiBaseUrl}/api/categories/{$slug}/posts");
 
         if ($response->successful()) {
-            $responseData = $response->json()['data']; 
+            $responseData = $response->json()['data'];
             $category = $responseData['category'];
             $posts = $responseData['posts'];
 
@@ -52,8 +52,9 @@ class HomeController
     public function showkvkk()
     {
         $response = Http::get("{$this->apiBaseUrl}/api/kvkk");
-        $kvkk = $response->json('data');
+        $kvkk = $response->json('kvkk');
 
         return view('kvkk.show', compact('kvkk'));
     }
 }
+

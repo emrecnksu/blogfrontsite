@@ -45,6 +45,7 @@
             <form action="{{ route('comments.store') }}" method="POST" class="mb-8 bg-white shadow-md rounded p-4">
                 @csrf
                 <input type="hidden" name="post_id" value="{{ $postInfo['id'] }}">
+                <input type="hidden" name="post_slug" value="{{ $postInfo['slug'] }}">
                 <textarea name="content" rows="4" class="w-full p-2 border rounded mb-4" placeholder="Yorumunuzu yazın" required></textarea>
                 <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Yorum Yap</button>
             </form>
@@ -73,13 +74,13 @@
                             @endif
                         </div>
                         <p class="text-gray-700">{{ $comment['content'] }}</p>
-                        @if (Session::has('token') && Session::get('user_id') == $comment['user_id'])
+                        @if (Session::has('token') && Session::get('user.id') == $comment['user_id'])
                             <div class="mt-2 flex">
                                 <button onclick="document.getElementById('edit-form-{{ $comment['id'] }}').classList.toggle('hidden')" class="px-4 py-2 bg-yellow-500 text-white rounded">Düzenle</button>
                                 <form action="{{ route('comments.delete', $comment['id']) }}" method="POST" class="ml-2">
                                     @csrf
                                     @method('DELETE')
-                                    <input type="hidden" name="post_id" value="{{ $postInfo['id'] }}">
+                                    <input type="hidden" name="post_slug" value="{{ $postInfo['slug'] }}">
                                     <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded">Sil</button>
                                 </form>
                             </div>
@@ -87,7 +88,7 @@
                                 @csrf
                                 @method('POST')
                                 <textarea name="content" rows="2" class="w-full p-2 border rounded mb-2" required>{{ $comment['content'] }}</textarea>
-                                <input type="hidden" name="post_id" value="{{ $postInfo['id'] }}">
+                                <input type="hidden" name="post_slug" value="{{ $postInfo['slug'] }}">
                                 <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded">Güncelle</button>
                             </form>
                         @endif
@@ -104,7 +105,7 @@
                 @foreach ($relatedPosts as $relatedPost)
                     <div class="w-full md:w-1/3 px-2 pb-12">
                         <div class="h-full bg-gray-100 rounded overflow-hidden shadow-md hover:shadow-lg relative smooth">
-                            <a href="{{ url('/post/' . $relatedPost['id']) }}" class="no-underline">
+                            <a href="{{ url('/post/' . $relatedPost['slug']) }}" class="no-underline">
                                 <img src="{{ $relatedPost['image'] }}" class="w-full h-64 object-cover rounded-t" alt="{{ $relatedPost['title'] }}">
                                 <div class="p-4">
                                     <p class="text-lg font-bold text-gray-900">{{ $relatedPost['title'] }}</p>

@@ -33,7 +33,7 @@
                         </button>
                         <div class="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden" id="categories-menu">
                             @foreach ($categories as $category)
-                                <a href="{{ route('category.posts', ['id' => $category['id']]) }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">{{ $category['name'] }}</a>
+                                <a href="{{ route('category.posts', ['slug' => $category['slug']]) }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">{{ $category['name'] }}</a>
                             @endforeach
                         </div>
                     </li>
@@ -73,7 +73,7 @@
                     <ul class="ml-4 mt-2 space-y-2">
                         @foreach ($categories as $category)
                             <li>
-                                <a href="{{ route('category.posts', ['id' => $category['id']]) }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">{{ $category['name'] }}</a>
+                                <a href="{{ route('category.posts', ['slug' => $category['slug']]) }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">{{ $category['name'] }}</a>
                             </li>
                         @endforeach
                     </ul>

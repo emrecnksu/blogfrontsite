@@ -47,7 +47,7 @@ class CommentController
 
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
-        ])->post("{$this->apiBaseUrl}/api/comments/{$id}", [
+        ])->post("{$this->apiBaseUrl}/api/comments/update/{$id}", [
             'post_id' => $request->post_id,
             'content' => $request->content,
         ]);
@@ -55,10 +55,10 @@ class CommentController
         $responseData = $response->json();
 
         if ($response->successful()) {
-            return redirect()->route('post.show', ['id' => $request->post_id])->with('success', $responseData['message']);
+            return redirect()->route('post.show', ['slug' => $request->post_slug])->with('success', 'Yorum başarıyla güncellendi.');
         }
 
-        return redirect()->route('post.show', ['id' => $request->post_id])->with('error', $responseData['message'] ?? 'Yorum güncellenemedi.');
+        return redirect()->route('post.show', ['slug' => $request->post_slug])->with('error', $responseData['message'] ?? 'Yorum güncellenemedi.');
     }
 
     public function delete(Request $request, $id)
@@ -69,7 +69,7 @@ class CommentController
             return redirect()->route('login.form')->with('error', 'Yetkilendirme hatası. Lütfen tekrar giriş yapın.');
         }
 
-        $response = Http::withToken($token)->delete("{$this->apiBaseUrl}/api/comments/{$id}");
+        $response = Http::withToken($token)->delete("{$this->apiBaseUrl}/api/comments/delete/{$id}");
 
         $responseData = $response->json();
 

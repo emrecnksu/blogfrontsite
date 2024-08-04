@@ -8,7 +8,7 @@
         @forelse ($posts as $post)
             <div class="w-full md:w-1/3 px-2 pb-12">
                 <div class="h-full bg-white rounded overflow-hidden shadow-md hover:shadow-lg relative smooth">
-                    <a href="{{ route('post.show', ['id' => $post['id']]) }}" class="no-underline hover:no-underline">
+                    <a href="{{ route('post.show', ['slug' => $post['slug']]) }}" class="no-underline hover:no-underline">
                         <img src="{{ $post['image'] }}" class="h-48 w-full rounded-t shadow-lg">
                         <div class="p-6 h-auto md:h-48">
                             @if(isset($post['category']))
@@ -32,4 +32,3 @@
     </div>
 </div>
 @endsection
-

@@ -16,8 +16,7 @@ Route::post('login', [UserController::class, 'login'])->name('login');
 
 Route::post('logout', [UserController::class, 'logout'])->name('logout');
 
-Route::get('post/{id}', [HomeController::class, 'show'])->name('post.show');
-Route::get('post/{id}', [HomeController::class, 'show'])->name('post.show');
+Route::get('post/{slug}', [HomeController::class, 'show'])->name('post.show');
 
 Route::get('profile', [UserProfileController::class, 'show'])->name('profile');
 Route::post('profile/update', [UserProfileController::class, 'update'])->name('profile.update');
@@ -28,6 +27,6 @@ Route::post('/comments', [CommentController::class, 'store'])->name('comments.st
 Route::post('/comments/{id}', [CommentController::class, 'update'])->name('comments.update');
 Route::delete('/comments/{id}', [CommentController::class, 'delete'])->name('comments.delete');
 
-Route::get('categories/{id}/posts', [HomeController::class, 'categoryPosts'])->name('category.posts');
+Route::get('categories/{slug}/posts', [HomeController::class, 'categoryPosts'])->name('category.posts');
 
 Route::get('/kvkk', [HomeController::class, 'showkvkk'])->name('kvkk.show');
