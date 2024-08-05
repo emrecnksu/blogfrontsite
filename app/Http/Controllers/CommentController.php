@@ -24,17 +24,17 @@ class CommentController
         }
 
         $response = Http::withToken($token)->post("{$this->apiBaseUrl}/api/comments", [
-            'post_id' => $request->post_id,
+            'post_slug' => $request->post_slug,
             'content' => $request->content,
         ]);
 
         $responseData = $response->json();
 
         if ($response->successful()) {
-            return redirect()->route('post.show', ['id' => $request->post_id])->with('success', $responseData['message']);
+            return redirect()->route('post.show', ['slug' => $request->post_slug])->with('success', $responseData['message']);
         }
 
-        return redirect()->route('post.show', ['id' => $request->post_id])->with('error', $responseData['message'] ?? 'Yorum eklenemedi.');
+        return redirect()->route('post.show', ['slug' => $request->post_slug])->with('error', $responseData['message'] ?? 'Yorum eklenemedi.');
     }
 
     public function update(Request $request, $id)
@@ -48,7 +48,7 @@ class CommentController
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
         ])->post("{$this->apiBaseUrl}/api/comments/update/{$id}", [
-            'post_id' => $request->post_id,
+            'post_slug' => $request->post_slug,
             'content' => $request->content,
         ]);
 
@@ -74,9 +74,9 @@ class CommentController
         $responseData = $response->json();
 
         if ($response->successful()) {
-            return redirect()->route('post.show', ['id' => $request->post_id])->with('success', $responseData['message']);
+            return redirect()->route('post.show', ['slug' => $request->post_slug])->with('success', $responseData['message']);
         }
 
-        return redirect()->route('post.show', ['id' => $request->post_id])->with('error', $responseData['message'] ?? 'Yorum silinemedi.');
+        return redirect()->route('post.show', ['slug' => $request->post_slug])->with('error', $responseData['message'] ?? 'Yorum silinemedi.');
     }
 }

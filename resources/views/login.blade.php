@@ -44,11 +44,11 @@
             @csrf
             <div class="mb-4">
                 <label for="email" class="block text-sm font-medium text-gray-300">E-Posta</label>
-                <input type="email" id="email" name="email" class="mt-1 block w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+                <input type="email" id="email" name="email" class="mt-1 block w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
             </div>
             <div class="mb-6">
                 <label for="password" class="block text-sm font-medium text-gray-300">Şifre</label>
-                <input type="password" id="password" name="password" class="mt-1 block w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+                <input type="password" id="password" name="password" class="mt-1 block w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" >
                 <div class="flex justify-end mt-2">
                     <a href="#" class="text-sm text-indigo-400 hover:underline">Şifrenizi mi unuttunuz?</a>
                 </div>

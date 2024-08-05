@@ -12,6 +12,8 @@
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js"></script>
     <link rel="stylesheet" href="{{ asset('css/HomePage.css') }}">
+
+    @livewireStyles
 </head>
 <body class="bg-white font-sans leading-normal tracking-normal min-h-screen flex flex-col">
     <nav class="bg-gray-900 p-4 mt-0 w-full">
@@ -151,76 +153,6 @@
         });
     </script>
 
-    {{-- <script>
-        var navToggle = document.getElementById("nav-toggle");
-        var navContent = document.getElementById("nav-content");
-
-        navToggle.addEventListener("click", function () {
-            navContent.classList.toggle("hidden");
-        });
-
-        var userMenuButton = document.getElementById("user-menu-button");
-        var userMenu = document.getElementById("user-menu");
-
-        userMenuButton.addEventListener("click", function () {
-            userMenu.classList.toggle("hidden");
-        });
-
-        var h = document.documentElement,
-            b = document.body,
-            st = 'scrollTop',
-            sh = 'scrollHeight',
-            progress = document.querySelector('#progress'),
-            scroll;
-        var scrollpos = window.scrollY;
-        var header = document.getElementById("header");
-
-        document.addEventListener('scroll', function() {
-            scroll = (h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight) * 100;
-            progress.style.setProperty('--scroll', scroll + '%');
-
-            scrollpos = window.scrollY;
-
-            if (scrollpos > 100) {
-                header.classList.remove("hidden");
-                header.classList.remove("fadeOutUp");
-                header.classList.add("slideInDown");
-            } else {
-                header.classList.remove("slideInDown");
-                header.classList.add("fadeOutUp");
-                header.classList.add("hidden");
-            }
-        });
-
-        const t = document.querySelector(".js-scroll-top");
-        if (t) {
-            t.onclick = () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: "smooth"
-                })
-            };
-            const e = document.querySelector(".scroll-top path"),
-                o = e.getTotalLength();
-            e.style.transition = e.style.WebkitTransition = "none",
-                e.style.strokeDasharray = `${o} ${o}`,
-                e.style.strokeDashoffset = o,
-                e.getBoundingClientRect(),
-                e.style.transition = e.style.WebkitTransition = "stroke-dashoffset 10ms linear";
-            const n = function() {
-                const t = window.scrollY || window.scrollTopBtn or document.documentElement.scrollTopBtn,
-                    n = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, document.body.offsetHeight, document.documentElement.offsetHeight, document.body.clientHeight, document.documentElement.clientHeight),
-                    s = Math.max(document.documentElement.clientHeight, window.innerHeight or 0);
-                var l = o - t * o / (n - s);
-                e.style.strokeDashoffset = l
-            };
-            n();
-            const s = 100;
-            window.addEventListener("scroll", (function(e) {
-                n();
-                (window.scrollY or window.scrollTopBtn or document.getElementsByTagName("html")[0].scrollTopBtn) > s ? t.classList.add("is-active") : t.classList.remove("is-active")
-            }), !1)
-        }
-    </script> --}}
+    @livewireScripts
 </body>
 </html>
