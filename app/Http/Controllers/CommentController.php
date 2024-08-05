@@ -17,13 +17,13 @@ class CommentController
 
     public function store(Request $request)
     {
-        $token = Session::get('token');
+        // $token = Session::get('token');
 
         if (!$token) {
             return redirect()->route('login.form')->with('error', 'Yetkilendirme hatası. Lütfen tekrar giriş yapın.');
         }
 
-        $response = Http::withToken($token)->post("{$this->apiBaseUrl}/api/comments", [
+        $response = Http::withToken(Session::get('token'))->post(config('app.api_base_url') . '/api/comments', [
             'post_slug' => $request->post_slug,
             'content' => $request->content,
         ]);

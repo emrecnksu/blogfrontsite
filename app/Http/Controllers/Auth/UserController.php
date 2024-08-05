@@ -45,36 +45,34 @@ class UserController
     }
 
     public function login(Request $request)
-{
-    $response = Http::post("{$this->apiBaseUrl}/api/login", [
-        'email' => $request->email,
-        'password' => $request->password,
-    ]);
-
-    $responseData = $response->json();
-
-    // Yanıtı loglayarak inceleyin
-    \Log::info('API Response:', ['response' => $responseData]);
-
-    if ($response->successful() && isset($responseData['data']['user'])) {
-        Session::put('user', [
-            'id' => $responseData['data']['user']['id'] ?? null,
-            'name' => $responseData['data']['user']['name'] ?? null,
-            'surname' => $responseData['data']['user']['surname'] ?? null,
+    {
+        $response = Http::post("{$this->apiBaseUrl}/api/login", [
+            'email' => $request->email,
+            'password' => $request->password,
         ]);
-        Session::put('token', $responseData['data']['token'] ?? null);
 
-        return redirect()->route('index')->with('success', $responseData['message'] ?? 'Başarılı');
+        $responseData = $response->json();
+
+        // Yanıtı loglayarak inceleyin
+        \Log::info('API Response:', ['response' => $responseData]);
+
+        if ($response->successful() && isset($responseData['data']['user'])) {
+            Session::put('user', [
+                'id' => $responseData['data']['user']['id'] ?? null,
+                'name' => $responseData['data']['user']['name'] ?? null,
+                'surname' => $responseData['data']['user']['surname'] ?? null,
+            ]);
+            Session::put('token', $responseData['data']['token'] ?? null);
+
+            return redirect()->route('index')->with('success', $responseData['message'] ?? 'Başarılı');
+        }
+
+        if ($response->status() === 422 && isset($responseData['errors'])) {
+            return redirect()->back()->withErrors($responseData['errors']);
+        }
+
+        return redirect()->back()->with('error', $responseData['error'] ?? 'Giriş işlemi başarısız oldu.');
     }
-
-    if ($response->status() === 422 && isset($responseData['errors'])) {
-        return redirect()->back()->withErrors($responseData['errors']);
-    }
-
-    return redirect()->back()->with('error', $responseData['error'] ?? 'Giriş işlemi başarısız oldu.');
-}
-
-
 
     public function logout(Request $request)
     {

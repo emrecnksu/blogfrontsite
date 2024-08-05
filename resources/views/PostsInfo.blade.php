@@ -37,19 +37,19 @@
     </div>
 
     <!-- Yorumlar Bölümü -->
-    <div class="container mx-auto mt-8">
+    <div class="container mx-auto mt-8 mb-3">
         <h2 class="text-2xl font-bold mb-4">Yorumlar</h2>
-        @livewire('comment-section', ['postId' => $postInfo['id']])
+        <livewire:comment-component :postSlug="$postInfo['slug']" />
     </div>
 
-    <div class="border-radius bg-gray-100">
+    <div class="bg-gray-200">
         <div class="container w-full max-w-6xl mx-auto px-2 py-8">
             <h2 class="text-2xl font-bold mb-4">{{ $isCategoryRelated ? 'İlgili Yazılar' : 'Tavsiye Edilen Yazılar' }}</h2>
             <div class="flex flex-wrap -mx-2">
                 @foreach ($relatedPosts as $relatedPost)
                     <div class="w-full md:w-1/3 px-2 pb-12">
-                        <div class="h-full bg-gray-100 rounded overflow-hidden shadow-md hover:shadow-lg relative smooth">
-                            <a href="{{ url('/post/' . $relatedPost['slug']) }}" class="no-underline">
+                        <div class="h-full bg-white rounded overflow-hidden shadow-md hover:shadow-lg relative smooth">
+                            <a href="{{ url('/post/' . $relatedPost['id']) }}" class="no-underline">
                                 <img src="{{ $relatedPost['image'] }}" class="w-full h-64 object-cover rounded-t" alt="{{ $relatedPost['title'] }}">
                                 <div class="p-4">
                                     <p class="text-lg font-bold text-gray-900">{{ $relatedPost['title'] }}</p>
