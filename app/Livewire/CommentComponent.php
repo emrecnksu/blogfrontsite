@@ -13,6 +13,13 @@ class CommentComponent extends Component
     public $newComment = '';
     public $editCommentId;
     public $editCommentContent = '';
+    protected $apiBaseUrl;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->apiBaseUrl = config('app.api_base_url');
+    }
 
     public function mount($postSlug)
     {
@@ -22,7 +29,7 @@ class CommentComponent extends Component
 
     public function loadComments()
     {
-        $response = Http::get(config('app.api_base_url') . '/api/comments', [
+        $response = Http::get("{$this->apiBaseUrl}/api/comments", [
             'post_slug' => $this->postSlug,
         ]);
 
@@ -33,7 +40,7 @@ class CommentComponent extends Component
 
     public function addComment()
     {
-        $response = Http::withToken(Session::get('token'))->post(config('app.api_base_url') . '/api/comments', [
+        $response = Http::withToken(Session::get('token'))->post("{$this->apiBaseUrl}/api/comments", [
             'post_slug' => $this->postSlug,
             'content' => $this->newComment,
         ]);
@@ -45,7 +52,6 @@ class CommentComponent extends Component
             $this->loadComments();
             session()->flash('success', $responseData['message']);
         } else {
-            // Backend'den dönen tüm hataları alalım
             $errorMessage = $responseData['message'] ?? 'Yorum eklenemedi.';
             if (isset($responseData['errors'])) {
                 $errorMessage = implode(', ', array_map(function($errors) {
@@ -64,7 +70,7 @@ class CommentComponent extends Component
 
     public function updateComment()
     {
-        $response = Http::withToken(Session::get('token'))->post(config('app.api_base_url') . '/api/comments/update/' . $this->editCommentId, [
+        $response = Http::withToken(Session::get('token'))->post("{$this->apiBaseUrl}/api/comments/update/{$this->editCommentId}", [
             'content' => $this->editCommentContent,
             'post_slug' => $this->postSlug, 
         ]);
@@ -83,7 +89,7 @@ class CommentComponent extends Component
 
     public function deleteComment($id)
     {
-        $response = Http::withToken(Session::get('token'))->delete(config('app.api_base_url') . '/api/comments/delete/' . $id);
+        $response = Http::withToken(Session::get('token'))->delete("{$this->apiBaseUrl}/api/comments/delete/{$id}");
 
         if ($response->successful()) {
             $this->loadComments();
