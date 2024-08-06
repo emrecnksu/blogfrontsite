@@ -13,18 +13,16 @@ class CommentComponent extends Component
     public $newComment = '';
     public $editCommentId;
     public $editCommentContent = '';
-    protected $apiBaseUrl;
 
     public function mount($postSlug)
     {
-        $this->apiBaseUrl = config('app.api_base_url');
         $this->postSlug = $postSlug;
         $this->loadComments();
     }
 
     public function loadComments()
     {
-        $response = Http::get("{$this->apiBaseUrl}/api/comments", [
+        $response = Http::get(config('app.api_base_url') . '/api/comments', [
             'post_slug' => $this->postSlug,
         ]);
 
@@ -35,7 +33,7 @@ class CommentComponent extends Component
 
     public function addComment()
     {
-        $response = Http::withToken(Session::get('token'))->post("{$this->apiBaseUrl}/api/comments", [
+        $response = Http::withToken(Session::get('token'))->post(config('app.api_base_url') . '/api/comments', [
             'post_slug' => $this->postSlug,
             'content' => $this->newComment,
         ]);
@@ -65,7 +63,7 @@ class CommentComponent extends Component
 
     public function updateComment()
     {
-        $response = Http::withToken(Session::get('token'))->post("{$this->apiBaseUrl}/api/comments/update/{$this->editCommentId}", [
+        $response = Http::withToken(Session::get('token'))->post(config('app.api_base_url') . '/api/comments/update/' . $this->editCommentId, [
             'content' => $this->editCommentContent,
             'post_slug' => $this->postSlug, 
         ]);
@@ -84,7 +82,7 @@ class CommentComponent extends Component
 
     public function deleteComment($id)
     {
-        $response = Http::withToken(Session::get('token'))->delete("{$this->apiBaseUrl}/api/comments/delete/{$id}");
+        $response = Http::withToken(Session::get('token'))->delete(config('app.api_base_url') . '/api/comments/delete/' . $id);
 
         if ($response->successful()) {
             $this->loadComments();

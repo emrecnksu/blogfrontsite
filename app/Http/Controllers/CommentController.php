@@ -17,7 +17,7 @@ class CommentController
 
     public function store(Request $request)
     {
-        // $token = Session::get('token');
+        $token = Session::get('token');
 
         if (!$token) {
             return redirect()->route('login.form')->with('error', 'Yetkilendirme hatası. Lütfen tekrar giriş yapın.');
