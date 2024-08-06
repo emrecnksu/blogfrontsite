@@ -15,14 +15,9 @@ class CommentComponent extends Component
     public $editCommentContent = '';
     protected $apiBaseUrl;
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->apiBaseUrl = config('app.api_base_url');
-    }
-
     public function mount($postSlug)
     {
+        $this->apiBaseUrl = config('app.api_base_url');
         $this->postSlug = $postSlug;
         $this->loadComments();
     }
