@@ -66,7 +66,7 @@ class CommentComponent extends Component
     {
         $response = Http::withToken(Session::get('token'))->post(config('app.api_base_url') . '/api/comments/update/' . $this->editCommentId, [
             'content' => $this->editCommentContent,
-            'post_slug' => $this->postSlug, // post_slug ekliyoruz
+            'post_slug' => $this->postSlug, 
         ]);
 
         $responseData = $response->json();

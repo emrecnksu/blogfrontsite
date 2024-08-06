@@ -36,8 +36,14 @@ class UserController
             return redirect()->route('login.form')->with('success', $responseData['message']);
         }
 
-        return redirect()->back()->with('error', $responseData['error'] ?? 'Kayıt işlemi başarısız oldu.');
+        if ($response->status() === 422 && isset($responseData['error'])) {
+            return redirect()->back()->with('error', $responseData['error'])->withInput();
+        }
+
+        $errorMessage = $responseData['error'] ?? 'Kayıt işlemi başarısız oldu.';
+        return redirect()->back()->with('error', $errorMessage);
     }
+
 
     public function loginForm()
     {
@@ -53,9 +59,6 @@ class UserController
 
         $responseData = $response->json();
 
-        // Yanıtı loglayarak inceleyin
-        \Log::info('API Response:', ['response' => $responseData]);
-
         if ($response->successful() && isset($responseData['data']['user'])) {
             Session::put('user', [
                 'id' => $responseData['data']['user']['id'] ?? null,
@@ -64,11 +67,11 @@ class UserController
             ]);
             Session::put('token', $responseData['data']['token'] ?? null);
 
-            return redirect()->route('index')->with('success', $responseData['message'] ?? 'Başarılı');
+            return redirect()->route('index')->with('success', $responseData['message']);
         }
 
-        if ($response->status() === 422 && isset($responseData['errors'])) {
-            return redirect()->back()->withErrors($responseData['errors']);
+        if ($response->status() === 422 && isset($responseData['error'])) {
+            return redirect()->back()->with('error', $responseData['error'])->withInput();
         }
 
         return redirect()->back()->with('error', $responseData['error'] ?? 'Giriş işlemi başarısız oldu.');
