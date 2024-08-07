@@ -69,7 +69,7 @@ class CommentController
             return redirect()->route('login.form')->with('error', 'Yetkilendirme hatası. Lütfen tekrar giriş yapın.');
         }
 
-        $response = Http::withToken($token)->delete("{$this->apiBaseUrl}/api/comments/delete/{$id}");
+        $response = Http::withToken($token)->post("{$this->apiBaseUrl}/api/comments/delete/{$id}");
 
         $responseData = $response->json();
 

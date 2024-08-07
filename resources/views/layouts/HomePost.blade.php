@@ -121,9 +121,8 @@
                     </a>
                 </div>
                 <div class="flex w-full md:w-1/2 justify-center md:justify-end text-white font-extrabold">
-                    <a class="text-gray-200 no-underline hover:text-gray-400 hover:no-underline" href="{{ route('kvkk.show') }}">
-                        KVKK
-                    </a>
+                    <a href="{{ route('content.show', ['type' => 'privacy_policy']) }}" class="text-gray-400 hover:text-white mx-2">Gizlilik Politikası</a>
+                    <a href="{{ route('content.show', ['type' => 'kvkk']) }}" class="text-gray-400 hover:text-white mx-2">KVKK</a>
                 </div>
             </div>
         </div>

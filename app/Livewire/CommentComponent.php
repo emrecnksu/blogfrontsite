@@ -81,16 +81,21 @@ class CommentComponent extends Component
     }
 
     public function deleteComment($id)
-    {
-        $response = Http::withToken(Session::get('token'))->delete(config('app.api_base_url') . '/api/comments/delete/' . $id);
+{
+    $response = Http::withToken(Session::get('token'))->post(config('app.api_base_url') . '/api/comments/delete/' . $id);
 
-        if ($response->successful()) {
-            $this->loadComments();
-            session()->flash('success', 'Yorum başarıyla silindi.');
-        } else {
-            session()->flash('error', 'Yorum silinemedi.');
-        }
+    $responseData = $response->json();
+
+    if ($response->successful()) {
+        $this->loadComments();
+        session()->flash('success', 'Yorum başarıyla silindi.');
+    } else {
+        // Gelen yanıtı loglayalım
+        Log::error('Yorum silme hatası:', ['response' => $responseData]);
+
+        session()->flash('error', $responseData['message'] ?? 'Yorum silinemedi.');
     }
+}
 
     public function render()
     {

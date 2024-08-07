@@ -49,12 +49,12 @@ class HomeController
         }
     }
 
-    public function showkvkk()
+    public function showContent($type)
     {
-        $response = Http::get("{$this->apiBaseUrl}/api/kvkk");
-        $kvkk = $response->json('kvkk');
+        $response = Http::get("{$this->apiBaseUrl}/api/text-contents/{$type}");
+        $textContent = $response->successful() ? $response->json()['text_content'] : '';
 
-        return view('kvkk.show', compact('kvkk'));
+        return view('TextContent.ContentPage', compact('textContent', 'type'));
     }
 }
 

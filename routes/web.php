@@ -22,11 +22,10 @@ Route::get('profile', [UserProfileController::class, 'show'])->name('profile');
 Route::post('profile/update', [UserProfileController::class, 'update'])->name('profile.update');
 Route::post('profile/delete', [UserProfileController::class, 'delete'])->name('profile.delete');
 
-// Yorum işlemleri
 Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 Route::post('/comments/{id}', [CommentController::class, 'update'])->name('comments.update');
-Route::delete('/comments/{id}', [CommentController::class, 'delete'])->name('comments.delete');
+Route::post('/comments/{id}', [CommentController::class, 'delete'])->name('comments.delete');
 
 Route::get('categories/{slug}/posts', [HomeController::class, 'categoryPosts'])->name('category.posts');
 
-Route::get('/kvkk', [HomeController::class, 'showkvkk'])->name('kvkk.show');
+Route::get('content/{type}', [HomeController::class, 'showContent'])->name('content.show');
