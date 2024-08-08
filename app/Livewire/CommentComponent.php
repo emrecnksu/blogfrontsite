@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 
@@ -90,7 +91,6 @@ class CommentComponent extends Component
         $this->loadComments();
         session()->flash('success', 'Yorum başarıyla silindi.');
     } else {
-        // Gelen yanıtı loglayalım
         Log::error('Yorum silme hatası:', ['response' => $responseData]);
 
         session()->flash('error', $responseData['message'] ?? 'Yorum silinemedi.');
