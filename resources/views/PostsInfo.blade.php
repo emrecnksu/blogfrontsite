@@ -49,12 +49,13 @@
                 @foreach ($relatedPosts as $relatedPost)
                     <div class="w-full md:w-1/3 px-2 pb-12">
                         <div class="h-full bg-white rounded overflow-hidden shadow-md hover:shadow-lg relative smooth">
-                            <a href="{{ url('/post/' . $relatedPost['id']) }}" class="no-underline">
+                            <a href="{{ isset($relatedPost['slug']) ? url('/post/' . $relatedPost['slug']) : '#' }}" class="no-underline">
                                 <img src="{{ $relatedPost['image'] }}" class="w-full h-64 object-cover rounded-t" alt="{{ $relatedPost['title'] }}">
                                 <div class="p-4">
                                     <p class="text-lg font-bold text-gray-900">{{ $relatedPost['title'] }}</p>
                                 </div>
                             </a>
+
                         </div>
                     </div>
                 @endforeach

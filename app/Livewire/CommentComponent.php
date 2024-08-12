@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 
@@ -66,7 +65,7 @@ class CommentComponent extends Component
     {
         $response = Http::withToken(Session::get('token'))->post(config('app.api_base_url') . '/api/comments/update/' . $this->editCommentId, [
             'content' => $this->editCommentContent,
-            'post_slug' => $this->postSlug, 
+            'post_slug' => $this->postSlug,
         ]);
 
         $responseData = $response->json();
@@ -82,20 +81,16 @@ class CommentComponent extends Component
     }
 
     public function deleteComment($id)
-{
-    $response = Http::withToken(Session::get('token'))->post(config('app.api_base_url') . '/api/comments/delete/' . $id);
+    {
+        $response = Http::withToken(Session::get('token'))->post(config('app.api_base_url') . '/api/comments/delete/' . $id);
 
-    $responseData = $response->json();
-
-    if ($response->successful()) {
-        $this->loadComments();
-        session()->flash('success', 'Yorum başarıyla silindi.');
-    } else {
-        Log::error('Yorum silme hatası:', ['response' => $responseData]);
-
-        session()->flash('error', $responseData['message'] ?? 'Yorum silinemedi.');
+        if ($response->successful()) {
+            $this->loadComments();
+            session()->flash('success', 'Yorum başarıyla silindi.');
+        } else {
+            session()->flash('error', 'Yorum silinemedi.');
+        }
     }
-}
 
     public function render()
     {

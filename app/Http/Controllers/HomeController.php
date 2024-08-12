@@ -29,6 +29,7 @@ class HomeController
         $commentsResponse = Http::get("{$this->apiBaseUrl}/api/comments", ['query' => ['post_slug' => $slug]]);
 
         $postInfo = $postInfoResponse->successful() ? $postInfoResponse->json()['data'] : null;
+
         $relatedPosts = $relatedPostsResponse->successful() ? $relatedPostsResponse->json()['data']['relatedPosts'] : [];
         $isCategoryRelated = $relatedPostsResponse->successful() ? $relatedPostsResponse->json()['data']['isCategoryRelated'] : false;
         $comments = $commentsResponse->successful() ? $commentsResponse->json()['data'] : [];
@@ -52,9 +53,10 @@ class HomeController
     public function showContent($type)
     {
         $response = Http::get("{$this->apiBaseUrl}/api/text-contents/{$type}");
+        $textContent = $response->successful() ? $response->json()['text_content'] : '';
         $textContent = $response->successful() ? $response->json()['data']['text_content'] : '';
 
         return view('TextContent.ContentPage', compact('textContent', 'type'));
     }
 }
-    
+
